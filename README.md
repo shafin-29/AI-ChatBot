@@ -44,30 +44,106 @@ rate-limited (see [Troubleshooting](#troubleshooting)).
 
 ## 2. Set up
 
-Requires **Python 3.10+**.
+Requires **Python 3.10+**. Check with `python --version` (use `python3 --version` on macOS/Linux).
 
-```bash
-cd chatbot
+Pick the instructions for your shell. Run them from inside the `chatbot` folder.
 
+### Windows (PowerShell)
+
+```powershell
 # Create and activate a virtual environment
 python -m venv .venv
-source .venv/bin/activate          # Windows: .venv\Scripts\activate
+.venv\Scripts\Activate.ps1
 
 # Install pinned dependencies
 pip install -r requirements.txt
 
-# Add your key
-cp .env.example .env               # Windows: copy .env.example .env
-# ...then edit .env and set OPENROUTER_API_KEY=sk-or-v1-...
+# Create your .env file, then open it and paste your key
+Copy-Item .env.example .env
+notepad .env
 ```
+
+> **"Running scripts is disabled on this system"?** Allow scripts for the current window only, then activate again:
+>
+> ```powershell
+> Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+> .venv\Scripts\Activate.ps1
+> ```
+>
+> Note: PowerShell versions before 7 don't support `&&` between commands. Run each command on its own line.
+
+### Windows (Command Prompt)
+
+```bat
+python -m venv .venv
+.venv\Scripts\activate.bat
+pip install -r requirements.txt
+copy .env.example .env
+notepad .env
+```
+
+### macOS / Linux / Git Bash (bash or zsh)
+
+```bash
+# Create and activate a virtual environment
+python3 -m venv .venv
+source .venv/bin/activate
+
+# Install pinned dependencies
+pip install -r requirements.txt
+
+# Create your .env file, then edit it and paste your key
+cp .env.example .env
+nano .env
+```
+
+> **Git Bash on Windows:** activate with `source .venv/Scripts/activate` (note `Scripts`, not `bin`).
+
+### Conda (any OS)
+
+If you prefer conda, use it instead of `venv`:
+
+```bash
+conda create -n chatbot python=3.12
+conda activate chatbot
+pip install -r requirements.txt
+```
+
+Then create `.env` using the command for your shell above.
+
+### What goes in `.env`
+
+Set your key on one line, with **no quotes and no spaces** around the `=`:
+
+```
+OPENROUTER_API_KEY=your-key-here
+```
+
+Save the file as exactly `.env`. On Windows.
 
 ## 3. Run
 
-```bash
+With the virtual environment activated (your prompt shows `(.venv)`), the command is the same in every shell:
+
+```
 streamlit run app.py
 ```
 
-Streamlit opens <http://localhost:8501> in your browser.
+Streamlit opens <http://localhost:8501> in your browser. Press `Ctrl+C` in the terminal to stop it.
+
+**Without activating the environment** (handy if activation is blocked):
+
+```powershell
+# Windows
+.venv\Scripts\python -m streamlit run app.py
+```
+
+```bash
+# macOS / Linux
+.venv/bin/python -m streamlit run app.py
+```
+
+**Next time:** you only need to activate the environment and run `streamlit run app.py`. Don't repeat the install or `.env` steps.
 
 ## Configuration
 
